@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deplasman Bilet Sayacı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GENEL AYARLAR --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Oswald', sans-serif;
+            background-color: #a00000; /* Arka plan kırmızı tonu */
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2076&auto=format&fit=crop'); /* İsteğe bağlı arka plan resmi */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* --- KART TASARIMI --- */
+        .card {
+            background: rgba(0, 0, 0, 0.75); /* Yarı saydam siyah katman */
+            backdrop-filter: blur(5px);
+            width: 90%;
+            max-width: 800px;
+            padding: 40px 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Arka plandaki silik logolar için (Opsiyonel) */
+        .bg-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            width: 80%;
+            z-index: -1;
+            filter: grayscale(100%);
+        }
+
+        /* --- LOGOLAR ALANI --- */
+        .logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .team-logo {
+            width: 120px; /* Logo boyutu */
+            height: 120px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+            transition: transform 0.3s;
+        }
+        
+        .team-logo:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- PROGRESS BAR (İlerleme Çubuğu) --- */
+        .progress-container {
+            position: relative;
+            background-color: #2c2c44; /* Çubuğun boş rengi (Lacivert/Morumsu) */
+            height: 60px;
+            border-radius: 30px;
+            margin: 20px auto;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            background-color: #009e4f; /* Çubuğun dolu rengi (Yeşil) */
+            height: 100%;
+            width: 0%; /* JS ile güncellenecek */
+            border-radius: 30px 0 0 30px;
+            transition: width 1s ease-in-out;
+        }
+        
+        /* Yeşil top efekti (Barın ucundaki yuvarlak) */
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 60px; /* Yükseklik ile aynı olmalı */
+            background-color: #009e4f;
+            border-radius: 50%;
+            transform: translateX(50%);
+        }
+
+        /* Yüzde Yazısı */
+        .percentage-text {
+            position: absolute;
+            right: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- METİNLER --- */
+        .label-text {
+            font-size: 1.8rem;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .numbers {
+            font-size: 5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            line-height: 1;
+            font-style: italic;
+        }
+
+        .total-capacity {
+            font-size: 3rem;
+            opacity: 0.8;
+        }
+
+        /* --- ALT BİLGİ (TARİH) --- */
+        .footer-date {
+            font-size: 1rem;
+            margin-top: 20px;
+            text-align: right;
+            padding-right: 5%;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* Mobilde görünüm ayarları */
+        @media (max-width: 600px) {
+            .logos { gap: 20px; }
+            .team-logo { width: 80px; height: 80px; }
+            .label-text { font-size: 1.2rem; }
+            .numbers { font-size: 3rem; }
+            .total-capacity { font-size: 2rem; }
+            .percentage-text { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="logos">
+            <img src="https://upload.wikimedia.org/wikipedia/tr/c/cd/%C4%B0stanbul_Ba%C5%9Fak%C5%9Fehir_FK.png" alt="Ev Sahibi" class="team-logo">
+            
+            <img src="https://upload.wikimedia.org/wikipedia/tr/6/66/%C3%87aykur_Rizespor_armas%C4%B1.png" alt="Deplasman" class="team-logo">
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="percentage-text" id="percentageText">%0</div>
+        </div>
+
+        <div class="label-text">DEPLASMAN BİLET / KAPASİTE</div>
+
+        <div class="numbers">
+            <span id="soldText">0</span> <span class="total-capacity">/ <span id="capacityText">0</span></span>
+        </div>
+
+        <div class="footer-date" id="dateText">GÜNCELLEME TARİHİ: --.-- | --.--.----</div>
+    </div>
+
+    <script>
+        /* =========================================================
+           DÜZENLEME PANELİ: BURADAKİ SAYILARI DEĞİŞTİRMEN YETERLİ
+           =========================================================
+        */
+        const config = {
+            sold: 37,          // Satılan bilet sayısı
+            capacity: 545,     // Toplam kapasite
+            date: "28.01.2026",// Tarih
+            time: "22.51"      // Saat
+        };
+
+        /* ========================================================= */
+        /* Buradan aşağısına dokunmana gerek yok, otomatik hesaplar */
+
+        function updateDashboard() {
+            // Yüzdeyi hesapla
+            const percent = (config.sold / config.capacity) * 100;
+            // Virgülden sonra 1 basamak göster (6.8 gibi)
+            const formattedPercent = percent.toFixed(1).replace('.', ',');
+
+            // HTML elemanlarını güncelle
+            document.getElementById('soldText').innerText = config.sold;
+            document.getElementById('capacityText').innerText = config.capacity;
+            document.getElementById('percentageText').innerText = '%' + formattedPercent;
+            document.getElementById('dateText').innerText = `GÜNCELLEME TARİHİ: ${config.time} | ${config.date}`;
+            
+            // Çubuk genişliğini ayarla
+            // Top efektinin düzgün görünmesi için min %5 genişlik veriyoruz
+            const barWidth = percent < 5 ? 5 : percent; 
+            document.getElementById('progressBar').style.width = barWidth + '%';
+        }
+
+        // Sayfa yüklendiğinde çalıştır
+        updateDashboard();
+    </script>
+
+</body>
+</html>
