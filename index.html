@@ -12,10 +12,9 @@
             margin: 0;
             padding: 0;
             font-family: 'Oswald', sans-serif;
-            background-color: #a00000; /* Arka plan kırmızı tonu */
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2076&auto=format&fit=crop'); /* İsteğe bağlı arka plan resmi */
+            /* Arka planı koyu yeşil/saha tonu yaptık */
+            background: #1a2a1a url('https://www.tff.org/Resources/TFF/Images/General/tff-org-bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,28 +24,14 @@
 
         /* --- KART TASARIMI --- */
         .card {
-            background: rgba(0, 0, 0, 0.75); /* Yarı saydam siyah katman */
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.85); /* Daha koyu siyah zemin */
             width: 90%;
             max-width: 800px;
-            padding: 40px 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 50px 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
             text-align: center;
             position: relative;
-            overflow: hidden;
-        }
-
-        /* Arka plandaki silik logolar için (Opsiyonel) */
-        .bg-logo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.1;
-            width: 80%;
-            z-index: -1;
-            filter: grayscale(100%);
         }
 
         /* --- LOGOLAR ALANI --- */
@@ -54,108 +39,98 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
-            margin-bottom: 30px;
+            gap: 60px; /* Logolar arası boşluk */
+            margin-bottom: 40px;
         }
 
         .team-logo {
-            width: 120px; /* Logo boyutu */
-            height: 120px;
+            width: 130px; 
+            height: 130px;
             object-fit: contain;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
             transition: transform 0.3s;
         }
         
-        .team-logo:hover {
-            transform: scale(1.1);
+        .team-logo:hover { transform: scale(1.1); }
+
+        /* --- PROGRESS BAR --- */
+        .progress-wrapper {
+            position: relative;
+            width: 90%;
+            margin: 0 auto 30px auto;
         }
 
-        /* --- PROGRESS BAR (İlerleme Çubuğu) --- */
         .progress-container {
+            background-color: #2e2e42; /* Barın boş rengi (Koyu Lacivert/Gri) */
+            height: 50px;
+            border-radius: 25px;
+            overflow: hidden; /* Taşan kısımları gizle */
+            width: 100%;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
             position: relative;
-            background-color: #2c2c44; /* Çubuğun boş rengi (Lacivert/Morumsu) */
-            height: 60px;
-            border-radius: 30px;
-            margin: 20px auto;
-            width: 90%;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .progress-bar {
-            background-color: #009e4f; /* Çubuğun dolu rengi (Yeşil) */
+            background-color: #00b140; /* Rizespor Yeşili */
             height: 100%;
-            width: 0%; /* JS ile güncellenecek */
-            border-radius: 30px 0 0 30px;
+            width: 0%; /* JS ile dolacak */
+            border-radius: 25px; /* Yumuşak köşeler */
             transition: width 1s ease-in-out;
-        }
-        
-        /* Yeşil top efekti (Barın ucundaki yuvarlak) */
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            width: 60px; /* Yükseklik ile aynı olmalı */
-            background-color: #009e4f;
-            border-radius: 50%;
-            transform: translateX(50%);
+            box-shadow: 0 0 15px rgba(0, 177, 64, 0.5); /* Yeşil parlama efekti */
         }
 
-        /* Yüzde Yazısı */
-        .percentage-text {
+        /* Yüzde Yazısı - Barın sağında */
+        .percentage-badge {
             position: absolute;
-            right: 20px;
-            font-size: 2.5rem;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.2rem;
             font-weight: 700;
-            z-index: 2;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            color: white;
+            z-index: 5;
+            text-shadow: 1px 1px 2px black;
         }
 
         /* --- METİNLER --- */
         .label-text {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-style: italic;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 10px;
-            font-weight: 500;
+            margin-top: 15px;
+            color: #ddd;
         }
 
         .numbers {
-            font-size: 5rem;
+            font-size: 5.5rem;
             font-weight: 700;
-            margin: 10px 0;
+            margin: 5px 0;
             line-height: 1;
             font-style: italic;
+            text-shadow: 0 5px 10px rgba(0,0,0,0.5);
         }
 
         .total-capacity {
             font-size: 3rem;
-            opacity: 0.8;
+            color: #aaa;
         }
 
-        /* --- ALT BİLGİ (TARİH) --- */
         .footer-date {
-            font-size: 1rem;
-            margin-top: 20px;
+            font-size: 0.9rem;
+            margin-top: 25px;
             text-align: right;
             padding-right: 5%;
-            opacity: 0.9;
-            font-weight: 400;
+            color: #888;
         }
 
-        /* Mobilde görünüm ayarları */
+        /* Mobil Uyum */
         @media (max-width: 600px) {
             .logos { gap: 20px; }
             .team-logo { width: 80px; height: 80px; }
-            .label-text { font-size: 1.2rem; }
-            .numbers { font-size: 3rem; }
+            .percentage-badge { font-size: 1.5rem; }
+            .numbers { font-size: 3.5rem; }
             .total-capacity { font-size: 2rem; }
-            .percentage-text { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -163,14 +138,16 @@
 
     <div class="card">
         <div class="logos">
-            <img src="https://upload.wikimedia.org/wikipedia/tr/c/cd/%C4%B0stanbul_Ba%C5%9Fak%C5%9Fehir_FK.png" alt="Ev Sahibi" class="team-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/tr/c/cd/%C4%B0stanbul_Ba%C5%9Fak%C5%9Fehir_FK.png" alt="Başakşehir" class="team-logo">
             
-            <img src="https://upload.wikimedia.org/wikipedia/tr/6/66/%C3%87aykur_Rizespor_armas%C4%B1.png" alt="Deplasman" class="team-logo">
+            <img src="https://caykurrizespor.org.tr/Arsiv/Sistem/2021/07/23/1627035358.jpg" alt="Rizespor" class="team-logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Red_X_icon.svg/1024px-Red_X_icon.svg.png'">
         </div>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
-            <div class="percentage-text" id="percentageText">%0</div>
+        <div class="progress-wrapper">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="percentage-badge" id="percentageText">%0</div>
         </div>
 
         <div class="label-text">DEPLASMAN BİLET / KAPASİTE</div>
@@ -179,43 +156,35 @@
             <span id="soldText">0</span> <span class="total-capacity">/ <span id="capacityText">0</span></span>
         </div>
 
-        <div class="footer-date" id="dateText">GÜNCELLEME TARİHİ: --.-- | --.--.----</div>
+        <div class="footer-date" id="dateText">GÜNCELLEME: --.--</div>
     </div>
 
     <script>
-        /* =========================================================
-           DÜZENLEME PANELİ: BURADAKİ SAYILARI DEĞİŞTİRMEN YETERLİ
-           =========================================================
-        */
+        /* ================= AYARLAR ================= */
         const config = {
-            sold: 37,          // Satılan bilet sayısı
-            capacity: 545,     // Toplam kapasite
-            date: "28.01.2026",// Tarih
-            time: "22.51"      // Saat
+            sold: 84,           // Satılan Bilet
+            capacity: 545,      // Toplam Kapasite
+            date: "30.01.2026", // Tarih
+            time: "14.50"       // Saat
         };
-
-        /* ========================================================= */
-        /* Buradan aşağısına dokunmana gerek yok, otomatik hesaplar */
+        /* =========================================== */
 
         function updateDashboard() {
-            // Yüzdeyi hesapla
             const percent = (config.sold / config.capacity) * 100;
-            // Virgülden sonra 1 basamak göster (6.8 gibi)
+            // Yüzdeyi hesapla (virgülden sonra 1 basamak)
             const formattedPercent = percent.toFixed(1).replace('.', ',');
 
-            // HTML elemanlarını güncelle
             document.getElementById('soldText').innerText = config.sold;
             document.getElementById('capacityText').innerText = config.capacity;
             document.getElementById('percentageText').innerText = '%' + formattedPercent;
             document.getElementById('dateText').innerText = `GÜNCELLEME TARİHİ: ${config.time} | ${config.date}`;
             
-            // Çubuk genişliğini ayarla
-            // Top efektinin düzgün görünmesi için min %5 genişlik veriyoruz
-            const barWidth = percent < 5 ? 5 : percent; 
-            document.getElementById('progressBar').style.width = barWidth + '%';
+            // Bar genişliğini ayarla
+            // Çok küçükse bile en az %2 görünsün ki tamamen kaybolmasın
+            const displayPercent = percent < 2 ? 2 : percent;
+            document.getElementById('progressBar').style.width = displayPercent + '%';
         }
 
-        // Sayfa yüklendiğinde çalıştır
         updateDashboard();
     </script>
 
